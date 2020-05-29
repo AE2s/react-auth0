@@ -1,7 +1,39 @@
 import React, { Component } from 'react';
 
-export default class Profile extends Component {
+class Profile extends Component {
+  state = {
+    profile: null,
+    error: '',
+  };
+
+  componentDidMount() {
+    this.loadUserProfile();
+  }
+
+  loadUserProfile() {
+    this.props.auth.getProfile((profile, error) =>
+      this.setState({ profile, error })
+    );
+    console.log(this.state.profile);
+  }
+
   render() {
-    return <h1>Profile</h1>;
+    const { profile } = this.state;
+    console.log(profile);
+    if (!profile) return null;
+    return (
+      <>
+        <h1>Profile</h1>
+        <p>{profile.nickname}</p>
+        <img
+          style={{ maxWidth: 50, maxHeight: 50 }}
+          src={profile.picture}
+          alt="profile pic"
+        />
+        <pre>{JSON.stringify(profile, null, 2)}</pre>
+      </>
+    );
   }
 }
+
+export default Profile;
