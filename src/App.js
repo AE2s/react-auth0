@@ -3,6 +3,7 @@ import { Route, Redirect } from 'react-router-dom';
 import Home from './Home';
 import Profile from './Profile';
 import Private from './Private';
+import Courses from './Courses';
 import Public from './Public';
 import Nav from './Nav';
 import Auth from './Auth/Auth';
@@ -43,6 +44,17 @@ class App extends Component {
             render={(props) =>
               this.auth.isAuthenticated() ? (
                 <Private auth={this.auth} {...props} />
+              ) : (
+                this.auth.login()
+              )
+            }
+          />
+          <Route
+            path="/courses"
+            render={(props) =>
+              this.auth.isAuthenticated() &&
+              this.auth.userHasScopes(['read:courses']) ? (
+                <Courses auth={this.auth} {...props} />
               ) : (
                 this.auth.login()
               )
